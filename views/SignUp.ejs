@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <title>Sign Up Page</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .signup-modal {
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-google {
+      background-color: #f8f9fa;
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal-dialog signup-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title text-center mb-4">Sign Up</h2>
+      </div>
+      <div class="modal-body">
+        <form action="/signup" method="POST">
+          
+          <div class="form-group mb-3">
+            <input type="email" class="form-control" id="email" placeholder="Email" required>
+          </div>
+          <div class="form-group mb-3">
+            <input type="password" class="form-control" id="password" placeholder="Password" required>
+          </div>
+          <div class="mb-3">
+            <div class="g-recaptcha" data-sitekey="6LeEZdImAAAAAJsfh0mjPLPG1UCIJYGHRfVhiDiy"></div>
+          </div>
+          <div class="d-grid gap-2 mb-3">
+            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+          </div>
+           <p class="text-center mb-1">Or sign in with:</p>
+           <div class="d-flex justify-content-center mb-3">
+             <a href="/auth/google" class="btn btn-google me-2">
+               <img src="https://img.icons8.com/color/48/000000/google-logo.png" alt="Google" width="20" class="me-2">
+               Sign in with Google
+             </a>
+           </div>
+          <p class="text-center">Already have an account? <a href="/signin" class="signin-link">Sign in</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+</body>
+
+</html>
