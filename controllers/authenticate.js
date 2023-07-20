@@ -1,25 +1,67 @@
 const axios = require('axios')
+const User = require('../models/User')
+const bcrypt = require('bcrypt')
+
+const googleUsers = require('../models/GoogleUsers')
+
 const client_id = "226320137550-nahjpluvitclqlsrf2do3ft290u20jn6.apps.googleusercontent.com"
 const client_secret = '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';
 
-const auth = (req, res) => {
-    res.send("auth")
+const auth = (req, res,next) => {
+  if(req.session.user)
+    next();
+  else
+    res.redirect('/')
+}
+const user = async (email, password) => {
+  const user = await User.finOne({ email })
+  
+  const userVerified =await bcrypt.compare(password, user.password)
+  return userVerified;
 }
 
+const verifyCaptcha = async(token) => {
+   try {
+    const response = await axios.post(
+      'https://www.google.com/recaptcha/api/siteverify',
+      null,
+      {
+        params: {
+          secret: '6LeEZdImAAAAAL0MfxSjt0Xzbsu-WN9F1jUKtZrl',
+          response: token,
+        },
+      }
+     );
+
+    // Check the response from the reCAPTCHA API
+    if (response.data.success) {
+      // reCAPTCHA verification successful
+      return true;
+    } else {
+      // reCAPTCHA verification failed
+      return false
+    }
+  } catch (error) {
+    // Error occurred during reCAPTCHA verification
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+}
 
 const googleAuth = (req, res) => {
      const redirectURI = 'http://localhost:4000/auth/google/callback';
      const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
      const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&redirect_uri=${redirectURI}&scope=${scope}`;
 
+
+
+  
      res.redirect(url);
 
     
 }
-
 const googleCallback =async (req, res) => {
     const { code } = req.query
-    
     const params = new URLSearchParams();
     params.append('code', code);
     params.append('client_id', client_id);
@@ -43,24 +85,50 @@ const googleCallback =async (req, res) => {
       id: profileResponse.data.id,
       name: profileResponse.data.name,
       email: profileResponse.data.email
-    };
+        };
+        
+      console.log(user)
+
+      googleUsers.findOne({ GId: user.id }).then(async gUser => {
+        if (!gUser) {
+          console.log( gUser)
+          const gUsers = new googleUsers({ GId: user.id, email: user.email })
+      
+      gUsers.save().then(() => {
+        console.log('google user saved in db')
+      }).catch(err => {
+        console.log(err)
+      })
+        } else {
+          console.log('google user is already stored in database')
+        }
+      })
+      
+      
 
     // Store user details in session
-    req.session.user = user;
+      req.session.user = user;
+      req.session.notification = {
+        type: 'success',
+        message:'Signed in from Google'
+      }
 
-    res.redirect('/dashboard');
-  } catch (error) {
-    console.error('Error:', error.response.data);
-    res.redirect('/login');
+        res.redirect('/reset')
+    } catch (error) {
+      console.error('Error:', error.response.data);
+      req.session.notification = {
+        type: 'error',
+        message: 'Error signing in, Try again! ',
+      };
+    res.redirect('/signin');
   }
 
+  
 
 
-    console.log(code)
-    res.send('authenticated by google')
 }
 
 
 
 
-module.exports = {auth,googleAuth,googleCallback}
+module.exports = {auth,googleAuth,googleCallback,verifyCaptcha,user}
