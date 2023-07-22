@@ -11,8 +11,8 @@ const sendMail = async (user) => {
    port: 587,
    
    auth: {
-     user: 'postmaster@sandbox7d63cad8d1b34123945c8c363b6a2078.mailgun.org',
-     pass: "5c13e5ebe0beb640c063df62d91ae968-262b213e-184d88ac",
+     user: process.env.MAILGUN_USER,
+     pass: process.env.MAILGUN_PASS,
    },
  });
 
@@ -22,7 +22,7 @@ const sendMail = async (user) => {
    const resetLink = `http://localhost:4000/validate_token?token=${token}`;
 
    const mailOptions = {
-      from: 'postmaster@sandbox7d63cad8d1b34123945c8c363b6a2078.mailgun.org',
+      from: process.env.MAILGUN_USER,
       to: user.email,
       subject: 'Reset password link',
      text: 'Click on the link to reset password' + " Reset: " + resetLink,

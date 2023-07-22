@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt')
 
 const googleUsers = require('../models/GoogleUsers')
 
-const client_id = "226320137550-nahjpluvitclqlsrf2do3ft290u20jn6.apps.googleusercontent.com"
-const client_secret = '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';
+const client_id = process.env.CLIENT_ID
+const client_secret = process.env.CLIENT_SECRET;
 
 const auth = (req, res,next) => {
   if(req.session.user)
