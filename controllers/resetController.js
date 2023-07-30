@@ -67,7 +67,7 @@ const setPassword = async (req, res) => {
             userData.save().then(() => {
                 console.log('password updated')
                 console.log(res.session)
-                 res.session.notification = {
+                 req.session.notification = {
                    type: 'success',
                    message: 'Password updated!',
                 };
@@ -79,7 +79,7 @@ const setPassword = async (req, res) => {
         }
         else {
             console.log('password dont match')
-             res.session.notification = {
+             req.session.notification = {
                type: 'error',
                message: 'Password does not match!',
             };
