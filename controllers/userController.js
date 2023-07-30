@@ -44,7 +44,7 @@ const signup =async (req, res) => {
             const saveUser = new User({ email, password })
             saveUser.save().then(() => {
                 console.log('user saved')
-                 res.session.notification = {
+                 req.session.notification = {
                    type: 'success',
                    message: 'User saved!',
                  };
@@ -56,7 +56,7 @@ const signup =async (req, res) => {
                 res.send(err)
             })
         } else {
-             res.session.notification = {
+             req.session.notification = {
                type: 'error',
                message: ' reCaptcha verification failed!',
              };
