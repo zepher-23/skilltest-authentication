@@ -19,7 +19,7 @@ const sendMail = async (user) => {
  const token = crypto.randomBytes(20).toString('hex');
  const saveToken = new Token({"user":user._id,token});
  saveToken.save().then(() => {
-   const resetLink = `http://localhost:4000/validate_token?token=${token}`;
+   const resetLink = `https://authentication-4bb9.onrender.com/validate_token?token=${token}`;
 
    const mailOptions = {
       from: process.env.MAILGUN_USER,
