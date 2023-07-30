@@ -31,8 +31,8 @@ const sendLink = async (req, res) => {
 
 const setPasswordLink = async (req, res) => {
     const {user,password} = req.body
-
-    User.updateOne({ 'email': user }, { 'password': password }).then(() => {
+const hashedPassword = await bcrypt.hash(password, 10);
+    User.updateOne({ 'email': user }, { 'password': hashedPassword }).then(() => {
         console.log('password updated')
          req.session.notification = {
            type: 'success',
