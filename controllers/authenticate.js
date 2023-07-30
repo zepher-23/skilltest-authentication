@@ -68,10 +68,7 @@ const googleCallback =async (req, res) => {
     params.append('code', code);
     params.append('client_id', client_id);
     params.append('client_secret', client_secret);
-    params.append(
-      'redirect_uri',
-      'https://authentication-4bb9.onrender.com/auth/google/callback'
-    );
+    params.append('redirect_uri', 'https://authentication-4bb9.onrender.com/auth/google/callback');
     params.append('grant_type', 'authorization_code');
 
     try {
