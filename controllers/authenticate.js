@@ -49,7 +49,9 @@ const verifyCaptcha = async(token) => {
 }
 
 const googleAuth = (req, res) => {
-     const redirectURI = 'http://localhost:4000/auth/google/callback';
+
+  const origin = 'https://authentication-4bb9.onrender.com';
+     const redirectURI ='https://authentication-4bb9.onrender.com/auth/google/callback';
      const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
      const url = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${client_id}&redirect_uri=${redirectURI}&scope=${scope}`;
 
@@ -66,7 +68,10 @@ const googleCallback =async (req, res) => {
     params.append('code', code);
     params.append('client_id', client_id);
     params.append('client_secret', client_secret);
-    params.append('redirect_uri', 'http://localhost:4000/auth/google/callback');
+    params.append(
+      'redirect_uri',
+      'https://authentication-4bb9.onrender.com/auth/google/callback'
+    );
     params.append('grant_type', 'authorization_code');
 
     try {
