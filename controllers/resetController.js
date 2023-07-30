@@ -13,14 +13,14 @@ const sendLink = async (req, res) => {
         const user =await User.findOne({ email})
         console.log("user Id: ",user._id)
         mailController.sendMail(user)
-        res.session.notification = {
+        req.session.notification = {
           type: 'success',
           message: 'Mail sent. Follow instructions in the mail.',
         };
        res.redirect('/')
     }
     else {
-        res.session.notification = {
+        req.session.notification = {
             type: 'error',
                 message:'User not found!'
         }
@@ -34,14 +34,14 @@ const setPasswordLink = async (req, res) => {
 
     User.updateOne({ 'email': user }, { 'password': password }).then(() => {
         console.log('password updated')
-         res.session.notification = {
+         req.session.notification = {
            type: 'success',
            message: 'Password updated. Sign In',
          };
         res.redirect('/')
     }).catch(err => {
         console.log(err)
-         res.session.notification = {
+         req.session.notification = {
            type: 'error',
            message: 'Error updating password. Try again!',
         };
