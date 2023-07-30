@@ -44,7 +44,8 @@ const setPasswordLink = async (req, res) => {
          res.session.notification = {
            type: 'error',
            message: 'Error updating password. Try again!',
-         };
+        };
+        res.redirect('/')
     })
     
 }
@@ -65,14 +66,15 @@ const setPassword = async (req, res) => {
             userData.password = newPassword
             userData.save().then(() => {
                 console.log('password updated')
+                console.log(res.session)
                  res.session.notification = {
                    type: 'success',
                    message: 'Password updated!',
                 };
                 res.redirect('/')
             }).catch(err => {
-                res.send(err)
-                console.log(err)
+                res.send(err+" ERROR SAVING ")
+                console.log("ERROR SAVING :",err)
             })
         }
         else {
