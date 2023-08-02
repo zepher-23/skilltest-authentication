@@ -1,6 +1,9 @@
 const express = require('express')
 const session = require('express-session')
 const app = express()
+
+
+
 const bodyParser = require('body-parser')
 const path = require('path')
 const Home = require('./routes/Home')
@@ -26,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(express.json());
 
 
@@ -46,6 +50,9 @@ app.use((req, res, next) => {
   req.session.notification = null;
   next();
 });
+
+
+
 
 
 
